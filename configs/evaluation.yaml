@@ -1,0 +1,38 @@
+schema_version: 1
+
+# Evaluation protocol configuration.
+
+data:
+  split_manifest: manifests/split_manifest.csv
+  dataset_manifest: manifests/dataset_manifest.csv
+  # Layout expected under dataset_root (see manifests/README.md):
+  #   dataset_root/images/<source>/<session>/<image>.jpg
+  #   dataset_root/labels/<source>/<session>/<image>.txt   (YOLO format)
+  dataset_root: data/processed
+  images_dirname: images
+  labels_dirname: labels
+  split: test
+
+# A test frame counts as positive if it contains at least one fire or smoke
+# instance.
+frame_label_rule: positive_if_any_fire_or_smoke_instance
+
+alert_metrics:
+  # Alert-level positive prediction = decision "alert".
+  predicted_positive_decisions: [alert]
+  also_report:
+    treat_review_as_positive: true   # upper bound where human triage catches reviews
+
+latency:
+  percentiles: [50, 95, 99]
+  warmup_frames: 50
+  # Reference latencies reported in the paper (ms), Jetson Orin Nano:
+  # detector INT8 18.4; CLIP-when-invoked 74.6; end-to-end with conditional
+  # VLM 38.1; detector-only 21.2.
+
+bootstrap:
+  n_iterations: 1000
+  seed: 0
+
+outputs:
+  directory: reports/evaluation

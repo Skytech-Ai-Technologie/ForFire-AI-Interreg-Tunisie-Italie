@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uav-fire-detection"
+version = "0.1.0"
+description = "Two-stage UAV fire-detection pipeline: YOLOv8s detection with conditional OpenCLIP ViT-B/32 verification. ForFire AI project (Interreg Tunisie–Italie)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "Apache-2.0" }
+authors = [{ name = "ForFire AI Project (Interreg Tunisie–Italie)" }]
+keywords = ["fire-detection", "yolov8", "clip", "openclip", "uav", "edge-ai", "jetson"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core dependencies are kept deliberately small so that the pure-Python
+# decision policy, alert schema, and unit tests run on any machine.
+# The heavy model stack is pinned per-extras and in environment/requirements.lock.
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+imaging = ["numpy<2", "opencv-python>=4.8", "pillow>=10.0"]
+detector = ["ultralytics==8.0.196"]
+verifier = ["open_clip_torch==2.20.0", "torch>=2.0", "torchvision>=0.15"]
+telemetry = ["pymavlink>=2.4"]
+analysis = ["pandas>=2.0", "scipy>=1.10", "matplotlib>=3.7"]
+dev = ["pytest>=7.0", "numpy<2", "opencv-python>=4.8", "pillow>=10.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+uav_fire_detection = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

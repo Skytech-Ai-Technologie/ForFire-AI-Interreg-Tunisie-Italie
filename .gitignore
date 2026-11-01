@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# Training runs and model artifacts (never commit weights or engines)
+runs/
+models/
+*.pt
+*.engine
+*.onnx
+*.trt
+
+# Datasets and derived data (restricted imagery must not be committed)
+data/
+
+# Generated evaluation/benchmark outputs (templates under reports/ are kept)
+reports/evaluation/
+reports/benchmark/
+reports/environment.json
+
+# Editor / OS noise
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

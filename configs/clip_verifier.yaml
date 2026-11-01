@@ -1,0 +1,41 @@
+schema_version: 1
+
+# Stage 2 verifier configuration (OpenCLIP ViT-B/32 + decision policy).
+
+model:
+  library: open_clip
+  package_version_pinned: 2.20.0
+  model_name: ViT-B-32
+  pretrained: openai
+  precision: fp16
+  device: null                  # null = auto (cuda if available)
+
+prompts_file: prompts/fire_smoke_prompts.yaml
+
+scoring:
+  category_aggregation: max     # per-category score = max cosine over its prompts
+  normalization: raw_cosine     # raw_cosine | softmax; thresholds assume raw cosine
+  softmax_temperature: 0.01
+
+verification:
+  input_mode: full_frame        # full_frame | crop
+  crop_margin_ratio: 0.25
+  # The inference call is not preemptible; the budget is checked post-hoc and
+  # an overrun degrades to the YOLO-only fallback below.
+  time_budget_ms: 150.0
+  on_budget_exceeded: yolo_only_fallback
+
+policy:
+  # affirmative > 0.60                -> alert        (strictly greater)
+  # affirmative in [0.45, 0.60)       -> human review (lower bound inclusive)
+  # confuser_negative > 0.70          -> suppress     (strictly greater)
+  # ambiguous / unresolved            -> human review
+  alert_threshold: 0.60
+  review_threshold: 0.45
+  suppress_threshold: 0.70
+  # Ties are resolved in the fixed, fire-safety-conservative order:
+  #   alert > suppress > review band > default review
+  # (a strong affirmative outranks a strong confuser-negative so that a real
+  # fire is never suppressed by an overlapping confuser score).
+  precedence_note: >
+    Ties resolved as alert > suppress > review_band > default_review.

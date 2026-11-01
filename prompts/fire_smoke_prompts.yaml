@@ -1,0 +1,64 @@
+schema_version: 1
+
+# CLIP verification prompt library: 10 affirmative fire-context prompts,
+# 8 confuser-negative prompts, 6 ambiguous prompts routed to human review.
+
+counts_declared:
+  affirmative: 10
+  confuser_negative: 8
+  ambiguous: 6
+
+categories:
+  affirmative:
+    - id: AFF-01
+      text: "aerial view of burning forest with visible flames"
+    - id: AFF-02
+      text: "a forest fire with orange flames seen from a drone"
+    - id: AFF-03
+      text: "smoke rising from a burning woodland canopy"
+    - id: AFF-04
+      text: "a wildfire spreading across a forested hillside"
+    - id: AFF-05
+      text: "bright flames burning vegetation in an aerial photograph"
+    - id: AFF-06
+      text: "a burning tree with glowing embers seen from above"
+    - id: AFF-07
+      text: "a column of dark smoke rising from a forest fire"
+    - id: AFF-08
+      text: "aerial view of a grass fire with visible flames"
+    - id: AFF-09
+      text: "burning shrubland with active flames seen from the air"
+    - id: AFF-10
+      text: "a wildfire front with flames consuming trees"
+
+  confuser_negative:
+    - id: NEG-01
+      text: "misty forest in early morning"
+    - id: NEG-02
+      text: "sunset over a lake with reflective water"
+    - id: NEG-03
+      text: "hazy aerial view over forest"
+    - id: NEG-04
+      text: "an autumn forest with orange and red foliage"
+    - id: NEG-05
+      text: "sunlit clouds casting shadows over green forest"
+    - id: NEG-06
+      text: "a foggy valley at sunrise seen from the air"
+    - id: NEG-07
+      text: "dusty farmland fields viewed from a drone"
+    - id: NEG-08
+      text: "a red-roofed village surrounded by forest seen from above"
+
+  ambiguous:
+    - id: AMB-01
+      text: "warm evening light over a dry forest canopy"
+    - id: AMB-02
+      text: "brown and orange terrain seen from high altitude"
+    - id: AMB-03
+      text: "smoke-like clouds over a distant ridge"
+    - id: AMB-04
+      text: "a clearing with bare soil in the middle of a forest"
+    - id: AMB-05
+      text: "sun glare reflecting off a river between trees"
+    - id: AMB-06
+      text: "dust haze above a sunlit meadow"

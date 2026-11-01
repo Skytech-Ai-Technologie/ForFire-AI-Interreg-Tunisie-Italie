@@ -1,0 +1,40 @@
+uav-fire-detection
+Reproduction-oriented implementation of a two-stage UAV fire-detection
+pipeline (YOLOv8s detection with conditional OpenCLIP ViT-B/32 verification)
+as described in Jabli, Abdellaoui and Douik, "Drone-Based Early Forest Fire
+Detection Using Vision-Language Models on NVIDIA Jetson Orin Nano".
+
+Copyright 2028 ForFire AI Project (Interreg Tunisie–Italie). All rights reserved.
+
+This work was developed as part of the ForFire AI project under the
+Interreg Tunisie–Italie cooperation programme.
+
+============================================================================
+Licensing notes for third-party components (non-exhaustive)
+============================================================================
+
+The Apache License 2.0 applies to the original source code in this
+repository. The following runtime dependencies are distributed under their
+own license terms, and users must comply with them independently:
+
+* Ultralytics YOLO (ultralytics==8.0.196) is licensed under AGPL-3.0.
+  Training, fine-tuning, or exporting detector weights with Ultralytics,
+  and distributing software that includes or links that dependency, may
+  create AGPL-3.0 obligations for those components. Alternatives: obtain an
+  Ultralytics enterprise license, or substitute a permissively licensed
+  trainer. The repository's own code contains no Ultralytics-derived source.
+
+* OpenCLIP (open_clip_torch) — MIT.
+* PyTorch / torchvision — BSD-style.
+* OpenCV (opencv-python) — Apache-2.0.
+* NumPy, SciPy, pandas — BSD-style.
+* Matplotlib — Matplotlib license (BSD-compatible).
+* Pillow — HPND-style license.
+* PyYAML — MIT.
+* pymavlink — LGPL-3.0 (some generated files MIT); used only by the optional
+  telemetry transport in src/uav_fire_detection/alerts/link.py.
+
+Datasets referenced by the paper (FLAME 2, D-Fire, custom UAV imagery) are
+NOT included in this repository and MUST NOT be redistributed without
+verifying each upstream dataset's license terms and obtaining the
+appropriate permissions.

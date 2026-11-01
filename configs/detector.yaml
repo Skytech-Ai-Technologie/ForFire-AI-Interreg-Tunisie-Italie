@@ -1,0 +1,51 @@
+schema_version: 1
+
+# Stage 1 detector configuration (Ultralytics YOLOv8s, classes: fire/smoke).
+
+model:
+  architecture: yolov8s
+  pretrained_weights: yolov8s.pt   # COCO-pretrained initialization
+  classes: [fire, smoke]           # order defines label ids 0/1
+  parameter_count_millions: 11.2
+
+training:
+  epochs: 120
+  early_stopping:
+    enabled: true
+    patience: 15
+    monitor: mAP50
+  optimizer: SGD
+  lr0: 0.01
+  lr_schedule: cosine
+  lrf: 0.01
+  warmup_epochs: 3.0
+  momentum: 0.937
+  weight_decay: 5.0e-4
+  # Recorded for reference; the stock Ultralytics 8.0.196 trainer does not
+  # modify its loss by this factor.
+  focal_loss_gamma: 2.0
+  # Fire-only frames (fire present, smoke absent) are oversampled 2x.
+  fire_only_oversampling: 2.0
+  imgsz: 640
+  batch: 16
+  seed: 0
+  deterministic: true
+  workers: 8
+  augmentation:
+    fliplr: 0.5
+    degrees: 15.0
+    hsv_h: 0.08
+    hsv_s: 0.12
+    hsv_v: 0.10
+    mosaic: 0.25
+    close_mosaic: 10
+
+inference:
+  # Weights are normally supplied via --weights on the scripts; this default
+  # points at the layout produced by scripts/train_detector.py.
+  weights: runs/detector/train/weights/best.pt
+  imgsz: 640                # must match training
+  predict_conf: 0.25        # detector output confidence floor
+  conf_threshold: 0.45      # Stage-2 candidate gate (strictly greater)
+  iou: 0.45                 # NMS IoU
+  device: null              # null = auto; "0" for the first CUDA GPU

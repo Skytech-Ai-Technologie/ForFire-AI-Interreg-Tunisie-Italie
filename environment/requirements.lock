@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------------------
+# Pinned environment.
+#
+# Reference stack: JetPack 5.1.2, CUDA 11.4, TensorRT 8.5, Python 3.8,
+# Ultralytics 8.0.196, OpenCLIP 2.20.0.
+#
+# NOTE (Jetson): torch/torchvision/tensorrt on Jetson must come from NVIDIA's
+# L4T wheel index for the matching JetPack release (see environment/Dockerfile);
+# the pins below cover the pure-Python / x86_64 side.
+# ---------------------------------------------------------------------------
+numpy==1.24.4
+opencv-python==4.8.1.78
+pillow==10.0.1
+pyyaml==6.0.1
+tqdm==4.66.1
+pandas==2.0.3
+scipy==1.10.1
+matplotlib==3.7.3
+ultralytics==8.0.196
+open_clip_torch==2.20.0
+pymavlink==2.4.40
+
+# x86_64 dev/test only — do NOT pip-install torch on Jetson:
+#   torch==2.1.0
+#   torchvision==0.16.0
+#
+# Test tooling (not needed on the vehicle):
+#   pytest>=7.4

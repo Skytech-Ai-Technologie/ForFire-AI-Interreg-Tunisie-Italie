@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, cite it using these metadata.
+title: uav-fire-detection
+abstract: >-
+  Two-stage UAV fire-detection pipeline: YOLOv8s detection with conditional
+  OpenCLIP ViT-B/32 verification, as described by Jabli et al. Developed as
+  part of the ForFire AI project (Interreg Tunisie–Italie).
+authors:
+  - alias: ForFire AI Project
+    comment: Developed as part of the ForFire AI project (Interreg Tunisie–Italie); © 2028, all rights reserved.
+version: 0.1.0
+date-released: "2026-11-01"
+license: Apache-2.0
+repository-code: "https://example.invalid/uav-fire-detection" # TODO: fill with the real repository URL before publishing
+keywords:
+  - fire-detection
+  - yolov8
+  - clip
+  - uav
+  - edge-ai
