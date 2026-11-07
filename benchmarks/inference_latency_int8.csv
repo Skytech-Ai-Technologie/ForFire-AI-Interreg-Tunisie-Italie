@@ -1,0 +1,5 @@
+component,latency_ms,latency_std_ms,fps
+image_preprocessing,2.1,0.3,
+yolov8s_detector,18.4,1.2,54.3
+clip_vlm_when_invoked,74.6,4.8,13.4
+detector_only_total,21.2,1.5,47.2

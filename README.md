@@ -56,6 +56,7 @@ flowchart LR
 ├── prompts/
 │   └── fire_smoke_prompts.yaml  # 24 prompts: 10 affirmative / 8 confuser-negative / 6 ambiguous
 ├── manifests/                   # dataset + split manifest schemas
+├── benchmarks/                  # reference benchmark tables (CSV)
 ├── environment/
 │   ├── Dockerfile               # Jetson / L4T recipe
 │   └── requirements.lock        # pinned environment
@@ -64,7 +65,7 @@ flowchart LR
 ├── scripts/
 │   ├── build_manifests.py  capture_environment.py  train_detector.py
 │   ├── export_tensorrt.py  evaluate.py  benchmark_jetson.py
-├── tests/                       # 47 unit tests, no GPU required
+├── tests/                       # unit tests, no GPU required
 └── reports/results.md   # results template
 ```
 
@@ -130,23 +131,46 @@ commit restricted imagery.
 | Verification | time budget exceeded | YOLO-only fallback with reduced-confidence flag |
 | Export | TensorRT precisions | FP32 / FP16 / INT8 |
 
-## Results
+## Benchmarks
 
-Reference results reported in the paper:
+Reference benchmark tables live in [`benchmarks/`](benchmarks) — one CSV per
+table — and are loaded directly by `scripts/evaluate.py` and
+`scripts/benchmark_jetson.py`, which report them alongside measured results:
+
+| File | Content |
+|---|---|
+| `detection_performance.csv` | YOLOv8n / YOLOv8s / YOLOv8s+CLIP accuracy, precision, recall, F1, mAP@0.5 |
+| `two_stage_vs_single_stage.csv` | FP / FN / F1 / FPS / precision at matched threshold 0.45 |
+| `inference_latency_int8.csv` | Per-stage latency profile (TensorRT INT8) |
+| `quantization_comparison.csv` | FP32 / FP16 / INT8 latency, FPS, accuracy drop, memory |
+| `environmental_conditions.csv` | F1 per operating condition (clear flame … wind-driven smoke) |
+| `detection_threshold_sweep.csv` | FP / FN / FPS / VLM-invocation rate vs threshold 0.30–0.60 |
+| `prompt_library_size.csv` | Per-category VLM accuracy vs prompt-library size 6–24 |
+| `yolov8_variants.csv` | YOLOv8 n/s/m/l parameters, mAP, latency, FPS, power |
+| `flight_parameters.csv` | Altitude vs detection range, GSD, F1, patrol speed |
+| `coverage_time.csv` | Swath and patrol time per 100 / 1,000 ha |
+| `end_to_end_alert_latency.csv` | Stage-by-stage alert latency (total 109.3 ms) |
+| `power_budget.csv` | Hover power budget (309.5 W total) |
+| `false_positive_categories.csv` / `false_negative_causes.csv` | Residual error breakdown |
+| `dataset_composition.csv` | Per-biome images / fire / smoke instance counts |
+| `augmentation.csv` | Training augmentation suite (probability, magnitude) |
+| `hardware.csv` / `software_stack.csv` | Platform and stack versions |
+
+Headline reference benchmarks (`yolov8s_clip`):
 
 | Metric | Value |
 |---|---:|
 | Accuracy / Precision / Recall / F1 | 94.7% / 93.1% / 95.4% / 0.942 |
 | mAP@0.5 | 93.5% |
 | Throughput | 26.2 FPS |
-| End-to-end latency (conditional VLM) | 38.1 ms |
-| YOLOv8s INT8 / CLIP latency | 18.4 ms / 74.6 ms |
-| VLM invocation rate | ~8–12% |
+| YOLOv8s INT8 detector latency | 18.4 ms (54.3 FPS) |
+| CLIP latency when invoked | 74.6 ms (13.4 FPS) |
+| VLM invocation rate at threshold 0.45 | 10% |
 | FP: YOLO-only → +CLIP | 147 → 116 |
 | FN: YOLO-only → +CLIP | 77 → 89 |
 
-Fill [reports/results.md](reports/results.md) with
-the outputs of the evaluation and benchmark scripts.
+Fill [reports/results.md](reports/results.md) with the outputs of the
+evaluation and benchmark scripts.
 
 ## Testing
 
@@ -154,11 +178,11 @@ the outputs of the evaluation and benchmark scripts.
 python -m pytest -q
 ```
 
-47 unit tests cover the decision policy (threshold strictness, band edges,
+The suite covers the decision policy (threshold strictness, band edges,
 tie precedence), pipeline wiring (gate, fallback, crop mode, timing), alert
 schema round-trips, retry-queue semantics (bounded, persistent, at-least-once),
-prompt-library structure, manifest determinism, and configuration invariants.
-No GPU, torch, or ultralytics required.
+prompt-library structure, manifest determinism, benchmark-table integrity,
+and configuration invariants. No GPU, torch, or ultralytics required.
 
 ## License
 

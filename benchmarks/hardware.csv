@@ -1,0 +1,10 @@
+component,specification
+frame,S500 quadrotor 500 mm wheelbase
+flight_controller,Pixhawk 6C / ArduPilot
+edge_compute,NVIDIA Jetson Orin Nano 8 GB
+compute_throughput,40 TOPS INT8
+power_envelope,10 W SoC
+rgb_camera,Sony IMX219 1920x1080 @ 30 FPS
+thermal_camera,FLIR Lepton 3.5 (optional)
+telemetry,915 MHz MAVLink
+storage,256 GB NVMe onboard

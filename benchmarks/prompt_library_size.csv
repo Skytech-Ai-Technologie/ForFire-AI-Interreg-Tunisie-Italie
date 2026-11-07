@@ -1,0 +1,5 @@
+n_prompts,affirmative_acc_pct,confuser_negative_acc_pct,ambiguous_acc_pct,vlm_acc_pct
+6,81.2,87.3,64.1,79.4
+12,86.7,91.8,70.8,84.8
+18,89.4,93.2,75.3,88.1
+24,91.3,94.7,78.2,90.2

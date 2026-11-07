@@ -1,6 +1,7 @@
 # Results
 
-Status: pending evaluation — run the scripts below and fill in the tables.
+Status: pending evaluation — run the scripts below and fill in the measured
+columns. Reference columns come from the CSV tables in [`benchmarks/`](../benchmarks).
 
 ## 1. Environment (from `scripts/capture_environment.py`)
 
@@ -18,12 +19,13 @@ Status: pending evaluation — run the scripts below and fill in the tables.
 
 ## 2. Detector metrics (from `scripts/evaluate.py`)
 
-| Metric | Measured | Reference (paper) |
+| Metric | Measured | Reference (`benchmarks/detection_performance.csv`, yolov8s_clip) |
 |---|---|---:|
-| mAP@0.5 | _(fill)_ | 0.935 |
-| Precision | _(fill)_ | 0.931 |
-| Recall | _(fill)_ | 0.954 |
+| Accuracy | _(fill)_ | 94.7% |
+| Precision | _(fill)_ | 93.1% |
+| Recall | _(fill)_ | 95.4% |
 | F1 | _(fill)_ | 0.942 |
+| mAP@0.5 | _(fill)_ | 93.5% |
 
 ## 3. Frame-level pipeline outcomes (from `scripts/evaluate.py`)
 
@@ -33,9 +35,10 @@ Status: pending evaluation — run the scripts below and fill in the tables.
 | Pipeline (alert = positive) | _(fill)_ | | | | | |
 | Pipeline (alert+review = positive) | _(fill)_ | | | | | |
 
-- FP delta vs baseline: _(fill)_ — reference: 147 → 116.
-- FN delta vs baseline: _(fill)_ — reference: 77 → 89.
-- CLIP invocation rate: _(fill)_ — reference: ~8–12%.
+- FP / FN reference (`benchmarks/two_stage_vs_single_stage.csv`):
+  yolov8s_only 147 / 77 → yolov8s_clip 116 / 89.
+- CLIP invocation reference (`benchmarks/detection_threshold_sweep.csv`):
+  threshold 0.45 → 10%.
 - YOLO-only fallback frames: _(fill)_.
 
 ## 4. Latency (from `scripts/benchmark_jetson.py`, median/p95/p99, after warm-up)
@@ -47,16 +50,21 @@ Status: pending evaluation — run the scripts below and fill in the tables.
 | End-to-end, mixed pipeline | | | |
 | End-to-end, detector-only | | | |
 
-Reference figures from the paper: detector INT8 18.4 ms; CLIP 74.6 ms when
-invoked; end-to-end with conditional VLM 38.1 ms; throughput 26.2 FPS.
+Reference latency profile (`benchmarks/inference_latency_int8.csv`):
+preprocessing 2.1 ms; YOLOv8s detector 18.4 ms (54.3 FPS); CLIP when invoked
+74.6 ms (13.4 FPS); detector-only total 21.2 ms (47.2 FPS). End-to-end alert
+breakdown (`benchmarks/end_to_end_alert_latency.csv`): total 109.3 ms.
 
 ## 5. Field/telemetry behavior (if flight-tested)
 
 GPS/telemetry accuracy, radio packet loss, queue overflow counts,
 operator-review outcomes, altitude/speed/illumination context: _(fill)_.
+Operational references: `benchmarks/flight_parameters.csv`,
+`benchmarks/coverage_time.csv`, `benchmarks/power_budget.csv`,
+`benchmarks/environmental_conditions.csv`.
 
 ## 6. Notes and deviations
 
-Record any deviation from the reference configuration here (prompt
+Record any deviation from the reference benchmarks here (prompt
 substitutions, calibration recipe, split differences) with pointers to the
 configuration files in which each choice is set.

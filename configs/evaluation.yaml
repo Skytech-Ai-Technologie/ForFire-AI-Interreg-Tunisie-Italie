@@ -26,9 +26,8 @@ alert_metrics:
 latency:
   percentiles: [50, 95, 99]
   warmup_frames: 50
-  # Reference latencies reported in the paper (ms), Jetson Orin Nano:
-  # detector INT8 18.4; CLIP-when-invoked 74.6; end-to-end with conditional
-  # VLM 38.1; detector-only 21.2.
+  # Reference latencies: benchmarks/inference_latency_int8.csv and
+  # benchmarks/end_to_end_alert_latency.csv.
 
 bootstrap:
   n_iterations: 1000

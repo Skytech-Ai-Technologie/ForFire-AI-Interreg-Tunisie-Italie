@@ -1,0 +1,7 @@
+condition,frames,f1,fps
+clear_sky_visible_flame,1240,0.971,27.1
+dense_smoke_no_flame,980,0.908,26.8
+partial_canopy_occlusion,760,0.934,26.5
+backlit_high_contrast,640,0.921,25.9
+low_illumination_dusk,520,0.887,24.7
+wind_driven_smoke_dispersal,430,0.874,25.2

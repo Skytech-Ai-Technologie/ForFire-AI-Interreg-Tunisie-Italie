@@ -1,0 +1,4 @@
+model,accuracy_pct,precision_pct,recall_pct,f1,map50_pct
+yolov8n,91.3,89.7,92.8,0.912,89.1
+yolov8s,93.2,91.6,94.1,0.928,91.7
+yolov8s_clip,94.7,93.1,95.4,0.942,93.5

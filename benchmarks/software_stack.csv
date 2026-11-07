@@ -1,0 +1,8 @@
+component,version,role
+nvidia_jetpack,5.1.2,base OS image
+cuda,11.4,GPU runtime
+tensorrt,8.5,INT8 inference
+python,3.8,training and runtime
+ultralytics,8.0.196,YOLOv8 implementation
+openclip,2.20.0,CLIP ViT-B/32
+docker,20.10.21,containerised deployment

@@ -1,0 +1,9 @@
+stage,latency_ms
+frame_capture,33.3
+preprocessing,2.1
+yolov8s_detection,18.4
+clip_vlm_amortised,8.2
+gps_stamp,1.5
+json_encoding,0.8
+radio_tx_915mhz,45.0
+total,109.3

@@ -16,7 +16,7 @@ from uav_fire_detection.verifier.prompts import (  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 PROMPTS_FILE = ROOT / "prompts" / "fire_smoke_prompts.yaml"
 
-# Prompt examples quoted in the paper.
+# Representative example prompts.
 EXAMPLE_TEXTS = {
     "aerial view of burning forest with visible flames",
     "misty forest in early morning",

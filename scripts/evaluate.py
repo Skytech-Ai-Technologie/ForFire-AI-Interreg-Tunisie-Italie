@@ -43,14 +43,26 @@ from uav_fire_detection.utils.timing import summarize_latencies  # noqa: E402
 
 logger = get_logger("evaluate")
 
-# Reference results reported in the paper (Jabli et al.), for comparison.
-REFERENCE_RESULTS = {
-    "accuracy": 0.947, "precision": 0.931, "recall": 0.954, "f1": 0.942,
-    "map50": 0.935, "throughput_fps": 26.2, "e2e_latency_ms": 38.1,
-    "yolo_int8_latency_ms": 18.4, "clip_latency_ms": 74.6,
-    "invocation_rate": "8-12%", "fp_yolo_only": 147, "fp_yolo_clip": 116,
-    "fn_yolo_only": 77, "fn_yolo_clip": 89,
-}
+# Reference benchmark tables shipped in benchmarks/ (see benchmarks/README.md).
+BENCHMARKS_DIR = REPO_ROOT / "benchmarks"
+
+
+def load_reference_benchmarks() -> dict:
+    """Load the reference benchmark tables used for comparison in reports."""
+    from uav_fire_detection.utils.benchmarks import load_csv
+
+    tables = (
+        "detection_performance.csv",
+        "two_stage_vs_single_stage.csv",
+        "inference_latency_int8.csv",
+        "quantization_comparison.csv",
+        "end_to_end_alert_latency.csv",
+    )
+    out = {}
+    for name in tables:
+        path = BENCHMARKS_DIR / name
+        out[name.replace(".csv", "")] = load_csv(path) if path.exists() else None
+    return out
 
 
 def _resolve(path_str: str) -> Path:
@@ -270,7 +282,7 @@ def main() -> int:
             outcomes["pipeline_alert_level"]["fp"] - outcomes["detector_only_baseline"]["fp"]
         ),
         "latency": latency,
-        "reference_results": REFERENCE_RESULTS,
+        "reference_benchmarks": load_reference_benchmarks(),
         "environment": collect(repo_dir=REPO_ROOT),
     }
 
@@ -323,10 +335,10 @@ def render_markdown(report: dict) -> str:
         json.dumps(report["latency"], indent=2, default=str),
         "```",
         "",
-        "## Reference results (reported in the paper)",
+        "## Reference benchmarks (benchmarks/*.csv)",
         "",
         "```json",
-        json.dumps(report["reference_results"], indent=2),
+        json.dumps(report["reference_benchmarks"], indent=2),
         "```",
         "",
         "## Detector validation (Ultralytics, this split)",

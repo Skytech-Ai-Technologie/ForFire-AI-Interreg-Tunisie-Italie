@@ -41,6 +41,24 @@ from uav_fire_detection.utils.timing import summarize_latencies  # noqa: E402
 
 logger = get_logger("benchmark_jetson")
 
+BENCHMARKS_DIR = REPO_ROOT / "benchmarks"
+
+
+def load_reference_benchmarks() -> dict:
+    """Load the reference benchmark tables shipped in benchmarks/."""
+    from uav_fire_detection.utils.benchmarks import load_csv
+
+    tables = (
+        "inference_latency_int8.csv",
+        "quantization_comparison.csv",
+        "end_to_end_alert_latency.csv",
+    )
+    out = {}
+    for name in tables:
+        path = BENCHMARKS_DIR / name
+        out[name.replace(".csv", "")] = load_csv(path) if path.exists() else None
+    return out
+
 IMX219_GSTREAMER = (
     "nvarguscamerasrc sensor-id={sensor_id} ! "
     "video/x-raw(memory:NVMM), width=1920, height=1080, framerate=30/1 ! "
@@ -201,6 +219,21 @@ def main() -> int:
         (out_dir / "tegrastats.log").write_text("\n".join(tegrastats.lines) + "\n", encoding="utf-8")
 
     wall_summary = summarize_latencies(wall)
+
+    reference_benchmarks = load_reference_benchmarks()
+    if reference_benchmarks.get("inference_latency_int8") and wall_summary.get("p50_ms"):
+        from uav_fire_detection.utils.benchmarks import find_row
+
+        detector_reference = find_row(
+            reference_benchmarks["inference_latency_int8"], component="yolov8s_detector"
+        )
+        if detector_reference:
+            logger.info(
+                "measured detector p50 %.1f ms vs benchmark %s ms",
+                wall_summary["p50_ms"],
+                detector_reference["latency_ms"],
+            )
+
     report = {
         "pipeline_version": __version__,
         "weights": args.weights,
@@ -221,6 +254,7 @@ def main() -> int:
         "decision_counts": dict(decisions),
         "source_counts": dict(sources),
         "tegrastats_captured": bool(tegrastats.lines),
+        "reference_benchmarks": reference_benchmarks,
         "environment": collect(repo_dir=REPO_ROOT),
     }
 

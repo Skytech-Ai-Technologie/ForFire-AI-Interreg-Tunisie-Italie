@@ -1,0 +1,4 @@
+mode,latency_ms,fps,accuracy_drop_pp,memory_mb
+fp32,52.3,19.1,0.0,512
+fp16,28.7,34.8,0.1,256
+int8,18.4,54.3,0.3,128

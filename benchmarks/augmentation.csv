@@ -1,0 +1,7 @@
+operation,probability,magnitude
+horizontal_flip,0.50,
+random_rotation,0.30,"+/-15 deg"
+gaussian_blur,0.20,"sigma 0.5-1.5"
+hsv_jitter,0.40,"H 8%, S 12%, V 10%"
+mosaic_composition,0.25,4-image tile
+cutmix,0.20,"ratio 0.2-0.5"

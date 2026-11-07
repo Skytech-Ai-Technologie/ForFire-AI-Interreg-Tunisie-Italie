@@ -1,0 +1,3 @@
+system,fp,fn,f1,avg_fps,precision_pct
+yolov8s_only,147,77,0.928,47.2,91.6
+yolov8s_clip,116,89,0.942,26.2,93.1

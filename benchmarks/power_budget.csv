@@ -1,0 +1,9 @@
+component,power_w
+flight_motors,280.0
+escs,12.0
+jetson_orin_nano_soc,10.0
+gimbal_servo,3.5
+nvme_storage,2.0
+rgb_camera,1.2
+mavlink_radio,0.8
+total,309.5
